@@ -143,11 +143,10 @@ prompt_pure_preprompt_render() {
 	# Add Git branch and dirty status info.
 	typeset -gA prompt_pure_vcs_info
 	if [[ -n $prompt_pure_vcs_info[branch] ]]; then
-		local branch="%F{$git_color}"'${prompt_pure_vcs_info[branch]}'
+		preprompt_parts+=("%F{$git_color}"'${prompt_pure_vcs_info[branch]}'"%F{$git_dirty_color}"'${prompt_pure_git_dirty}%f')
 		if [[ -n $prompt_pure_vcs_info[action] ]]; then
-			branch+="|%F{$prompt_pure_colors[git:action]}"'$prompt_pure_vcs_info[action]'"%F{$git_color}"
+			preprompt_parts+=($'\e[2;90m(\e[0m'"%F{$prompt_pure_colors[git:action]}"'$prompt_pure_vcs_info[action]%f'$'\e[2;90m)\e[0m')
 		fi
-		preprompt_parts+=("$branch""%F{$git_dirty_color}"'${prompt_pure_git_dirty}%f')
 	fi
 	# Git pull/push arrows.
 	if [[ -n $prompt_pure_git_arrows ]]; then
@@ -759,7 +758,7 @@ prompt_pure_setup() {
 		git:stash            cyan
 		git:branch           242
 		git:branch:cached    red
-		git:action           242
+		git:action           yellow
 		git:dirty            218
 		host                 242
 		path                 blue
